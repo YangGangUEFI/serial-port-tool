@@ -38,7 +38,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
       <div className="p-4 border-b border-gray-800 bg-gray-900/50 backdrop-blur">
         <h2 className="text-sm font-bold text-gray-100 flex items-center gap-2 uppercase tracking-wider">
           <Settings size={16} className="text-blue-500" />
-          Serial Tool
+          Serial Port Tool
         </h2>
       </div>
 

@@ -1,0 +1,22 @@
+[package]
+name = "serial-port-tool"
+version = "0.0.1"
+description = "A Serial Port Tool"
+authors = ["YangGang"]
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2.5.3", features = [] }
+
+[dependencies]
+log = "0.4"
+tauri = { version = "2.9.4", features = [] }
+tauri-plugin-log = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+
+[features]
+# this feature is used for production builds or when `devPath` points to the filesystem
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
