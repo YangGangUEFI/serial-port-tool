@@ -1,9 +1,9 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::sync::Mutex;
-use tauri::{State};
-use tokio::net::TcpListener;
+use tauri::State;
 use tokio::io::AsyncWriteExt;
+use tokio::net::TcpListener;
 use tokio::sync::broadcast;
 
 // --- State Definitions ---
@@ -38,7 +38,7 @@ async fn start_tcp_server(port: u16, state: State<'_, AppState>) -> Result<Strin
 
     // 启动监听线程
     let tx_for_thread = tx.clone();
-    
+
     tokio::spawn(async move {
         let addr = format!("0.0.0.0:{}", port);
         let listener = match TcpListener::bind(&addr).await {
@@ -59,7 +59,7 @@ async fn start_tcp_server(port: u16, state: State<'_, AppState>) -> Result<Strin
                         Ok((mut socket, addr)) => {
                             println!("New client connected: {}", addr);
                             let mut rx = tx_for_thread.subscribe();
-                            
+
                             // 为每个客户端启动一个写入线程
                             tokio::spawn(async move {
                                 loop {
@@ -109,10 +109,10 @@ fn stop_tcp_server(state: State<AppState>) -> Result<(), String> {
 #[tauri::command]
 fn broadcast_data(data: Vec<u8>, state: State<AppState>) -> Result<(), String> {
     let tx_guard = state.tx.lock().map_err(|e| e.to_string())?;
-    
+
     if let Some(tx) = &*tx_guard {
         // 不需要等待接收者，直接发送
-        let _ = tx.send(data); 
+        let _ = tx.send(data);
     }
     // 如果服务器没开，就忽略数据
     Ok(())
@@ -120,6 +120,7 @@ fn broadcast_data(data: Vec<u8>, state: State<AppState>) -> Result<(), String> {
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .manage(AppState {
             tx: Mutex::new(None),
             shutdown_tx: Mutex::new(None),
