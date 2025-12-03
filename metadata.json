@@ -1,0 +1,5 @@
+{
+  "name": "Tauri Serial Commander",
+  "description": "A professional-grade Serial Port tool with Terminal/Hex views, flow control, and file transmission.",
+  "requestFramePermissions": []
+}
